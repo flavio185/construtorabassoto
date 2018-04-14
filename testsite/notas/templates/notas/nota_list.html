@@ -1,0 +1,69 @@
+{% extends 'notas/base.html' %}
+
+{% block nav-notalist %}<a  class="active" href="{% url 'notas:nota_list' %}">Home</a>{% endblock %}
+
+
+{% block content %}
+<p align="right">
+{% if  deposito.valor  > 0 %}
+	Data Deposito: {{ deposito.data|date:"d/m/Y" }}</br>
+	Valor Deposito: {{ deposito.valor }}</br>
+{% else %}
+	Deposito: Nenhum deposito selecionado.</br>
+{% endif %}
+Total Notas (-) {{ total_notas }}</br>
+Total em caixa = {{ valor_em_caixa }}</p>
+
+<!--p>{{ query }}</p-->
+<div class="post">
+	<table>
+		<tr>
+			<th>Número</th>
+			<th>Data</th>
+			<th>tipo_gasto</th>
+			<th>Emitente</th>		
+			<th>Descricao</th>
+			<th>Valor</th>
+			{% if deposito.valor  > 0 %}
+			
+			{% else %}
+
+				<th>Deposito</th>
+			{% endif %}
+			<th>Imagem</th>
+			<th>Imagem1</th>
+		</tr>
+		{% for nota in notas %}
+			<tr>
+				<td><a href="{% url 'notas:nota_edit' nota.pk %}">{{ nota.numero }}</td>
+				<td>{{ nota.data|date:"d/m/Y" }}</td>
+				<td>{{ nota.tipo_gasto }}</td>
+				<td>{{ nota.emitente }}</td>				
+				<td>{{ nota.descricao }}</td>
+				<td>{{ nota.valor }}</td>
+				{% if deposito.valor  > 0 %}
+					
+				{% else %}
+					<td>{{ nota.deposito }}</td>
+				{% endif %}
+				<td><a href="{{ media_url }}{{ nota.imagem }}">{% if  nota.imagem %} imagem {% endif %}</td>
+				<td><a href="{{ media_url }}{{ nota.imagem1 }}">{% if  nota.imagem1 %} imagem1 {% endif %}</td>
+			</tr>
+		{% endfor %}
+	</table>
+</div>
+<div class="col-md-12">
+        <p></p>
+        <form action="{% url 'notas:save_query_to_user' %}" method="post" >
+		    {% csrf_token %}
+                <!--input type="text" name="query" value="{{ query }}">
+                <input type="text" name="user" value="" >
+				
+                <input type="text" name="alias">			
+                <input type="submit" value="Salvar planilha para usuário"-->
+				{{ form }}
+        </form>
+</div>
+
+{% endblock %}
+

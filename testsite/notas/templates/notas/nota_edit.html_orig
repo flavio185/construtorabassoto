@@ -1,0 +1,79 @@
+{% extends "notas/base.html" %}
+
+{% block content %}
+	<h1>Adicionar nota de compra</h1>
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		{% if form.non_field_errors %}
+			<div class="non-field-errors">
+				{% for error in form.non_field_errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		<p>
+		<label>{{ form.numero.label }}</label>
+		{{ form.numero }}
+		{% if form.numero.errors %}
+			<div class="form-error">
+				{% for error in form.numero.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.data.label }}</label>
+		{{ form.data }}
+		{% if form.data.errors %}
+			<div class="form-error">
+				{% for error in form.data.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.descricao.label }}</label>
+		{{ form.descricao }}
+		{% if form.descricao.errors %}
+			<div class="form-error">
+				{% for error in form.descricao.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.valor.label }}</label>
+		{{ form.valor }}
+		{% if form.valor.errors %}
+			<div class="form-error">
+				{% for error in form.valor.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.tipo_gasto.label }}</label>
+		{{ form.tipo_gasto }}
+		{% if form.tipo_gasto.errors %}
+			<div class="form-error">
+				{% for error in form.tipo_gasto.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+
+		<input type="submit" value="Adicionar nota">
+	</form>
+{% endblock %}
+

@@ -1,0 +1,9 @@
+{% if notas.count > 0 %}
+
+{% for nota in notas %}
+    <li><a href="/notas/get/{{ nota.id }}/">{{ nota.tipo_gasto }}</a></li>
+{% endfor %}
+
+{% else %}
+    <li>None to show!</li>
+{% endif %}

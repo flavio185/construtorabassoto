@@ -1,0 +1,38 @@
+{% extends "notas/base.html" %}
+
+{% block nav-notafilterform %}<a class="active" href="{% url 'notas:nota_filter_form' %}">Filtrar</a>{% endblock %}
+
+
+{% block content %}
+<div class="col-md-12">
+        <p></p>
+	<h1>Filtrar Notas</h1>
+	<form action="{% url 'notas:nota_filter' %}" method="get" >
+		{% csrf_token %}
+		{% if form.non_field_errors %}
+			<div class="non-field-errors">
+				{% for error in form.non_field_errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		<select name="deposito">
+			<option value="">Filtrar por deposito</option>
+			
+		{% for deposito in depositos %}
+			<option value={{ deposito.id }}>{{ deposito }}</option>
+		{% endfor %}
+		</select>		
+                <input type="date" name="data_inicio">   
+                <input type="date" name="data_fim">
+		<input type="number" step="any" name="valor">
+		<select name="tipo_gasto">
+			<option value="">Selecione o tipo gasto</option>
+			<option value="Ferramentas">Ferramentas</option>
+			<option value="Serviços">Serviços</option>
+		</select>
+		<input type="submit" value="Filtrar">
+	</form>
+</div>
+{% endblock %}
+

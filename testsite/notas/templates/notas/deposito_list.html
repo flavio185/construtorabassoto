@@ -1,0 +1,25 @@
+{% extends 'notas/base.html' %}
+
+{% block nav-notalist %}<a  class="active" href="{% url 'notas:deposito_list' %}">Home</a>{% endblock %}
+
+
+{% block content %}
+<p>{{ query }}</p>
+<div class="post">
+	<table>
+		<tr>
+			<th>Data</th>
+			<th>Valor</th>
+			<th>Comentários</th>
+		</tr>
+		{% for deposito in depositos %}
+			<tr>
+				<td>{{ deposito.data }}</td>
+				<td>{{ deposito.valor }}</td>
+				<td>{{ deposito.comentarios }}</td>		
+			</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}
+

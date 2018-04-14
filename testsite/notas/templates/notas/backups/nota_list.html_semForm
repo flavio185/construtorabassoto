@@ -1,0 +1,32 @@
+{% extends 'notas/base.html' %}
+
+{% block nav-notalist %}<a  class="active" href="{% url 'notas:nota_list' %}">Home</a>{% endblock %}
+
+
+{% block content %}
+<div class="post">
+	<table>
+		<tr>
+			<th>Número</th>
+			<th>Data</th>
+			<th>tipo_gasto</th>
+			<th>descricao</th>
+			<th>valor</th>
+			<th>imagem</th>
+			<th>imagem1</th>
+		</tr>
+		{% for nota in notas %}
+			<tr>
+				<td><a href="{% url 'notas:nota_detalhes' nota.pk %}">{{ nota.numero }}</td>
+				<td>{{ nota.data }}</td>
+				<td>{{ nota.tipo_gasto }}</td>
+				<td>{{ nota.descricao }}</td>
+				<td>{{ nota.valor }}</td>
+				<td>{{ nota.imagem }}</td>
+				<td>{{ nota.imagem1 }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}
+
