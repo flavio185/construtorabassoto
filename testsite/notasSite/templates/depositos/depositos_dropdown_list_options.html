@@ -1,0 +1,4 @@
+<option value="">Selecionar depósito</option>
+{% for deposito in depositos %}
+<option value="{{ deposito.id }}">{{ deposito.data | date:"d/m/Y" }} - {{ deposito.valor }}</option>
+{% endfor %}

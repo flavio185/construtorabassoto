@@ -1,0 +1,40 @@
+{% extends 'notas/base.html' %}
+
+{% block nav-depositolist %}<a  class="active" href="{% url 'notas:deposito_list' %}">Listar Depósitos</a>{% endblock %}
+
+
+{% block content %}
+<table class="table" border="0">
+	<tr>
+		<td>
+			<h1>Lista de depósitos.</h1>
+		</td>
+	</tr>
+</table>
+
+<div class="post">
+	<table class="indice">
+		<tr>
+			<th></th>
+			<th>Projeto</th>
+			<th>Data</th>
+			<th>Valor</th>
+			<th>Comentários</th>
+		</tr>
+		{% for deposito in depositos %}
+			<tr>
+				{% if perms.notas.can_change %}				
+					<td><a href="{% url 'notas:deposito_edit' deposito.pk %}">editar / <a href="{% url 'notas:nota_filter' %}?projeto={{deposito.projeto.pk}}&deposito={{deposito.pk}}">listar notas</td>
+				{% else %}
+					<td><b><a href="{% url 'notas:nota_filter' %}?projeto={{deposito.projeto.pk}}&deposito={{deposito.pk}}">listar notas</td>
+				{% endif %}
+				<td>{{ deposito.projeto }}</td>
+				<td>{{ deposito.data|date:"d/m/Y" }}</td>
+				<td>{{ deposito.valor }}</td>
+				<td>{{ deposito.comentarios }}</td>		
+			</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}
+

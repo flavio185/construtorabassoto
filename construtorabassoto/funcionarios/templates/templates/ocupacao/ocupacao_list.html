@@ -1,0 +1,36 @@
+{% extends "funcionarios/base.html" %}
+
+{% block nav-ocupacaolist %}<a class="active"  href="{% url 'funcionarios:ocupacao_list' %}">Listar Ocupações</a>{% endblock %}
+
+
+{% block content %}
+<table class="table" border="0">
+	<tr>
+		<td>
+			<h1>Lista de Ocupações.</h1>
+		</td>
+	</tr>
+</table>
+
+<div class="post">
+
+	<a href="{% url 'funcionarios:ocupacao_nova' %}" type="submit" class="btn btn-primary btn-block" > + Adicionar Ocupação</a>
+
+	<table class="indice">
+		<tr>
+			<th></th>
+			<th>Ocupação</th>
+			<th>Valor(diária)</th>
+
+		</tr>
+		{% for ocupacao in ocupacoes %}
+			<tr>
+				<td><a href="{% url 'funcionarios:ocupacao_edit' ocupacao.pk %}">editar</td>
+				<td>{{ ocupacao.nome }}</td>
+				<td>{{ ocupacao.valor }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}
+

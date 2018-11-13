@@ -1,0 +1,189 @@
+{% extends "notas/base.html" %}
+
+{% block nav-notanova %}<a class="active"  href="{% url 'notas:nota_nova' %}">Nova Nota</a>{% endblock %}
+
+
+{% block content %}
+	<table class="table" border="0">
+		<tr>
+			<td>
+				<h1>Editar nota de compra.</h1>
+			</td>
+		</tr>
+	</table>
+	<!--form method="post" enctype="multipart/form-data"-->
+		<form method="post" enctype="multipart/form-data" data-depositos-url="{% url 'notas:ajax_carregar_depositos' %}" id="filterForm">
+		{% csrf_token %}
+		<input type="hidden" name="next" value="{{ request.META.HTTP_REFERER }}">
+		{% if form.non_field_errors %}
+			<div class="non-field-errors">
+				{% for error in form.non_field_errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		<p>
+		<label>Número NF</label>
+		{{ form.numero }}
+		{% if form.numero.errors %}
+			<div class="form-error">
+				{% for error in form.numero.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.data.label }}</label>
+		<input type=date name=data value="{{ form.data.value|date:"Y-m-d" }}">
+		
+
+		{% if form.data.errors %}
+			<div class="form-error">
+				{% for error in form.data.errors %}
+					<span>{{ error }}"blabla"</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+		
+		<p>
+		<label>{{ form.emitente.label }}</label>
+		{{ form.emitente }}
+		{% if form.emitente.errors %}
+			<div class="form-error">
+				{% for error in form.emitente.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.descricao.label }}</label>
+		{{ form.descricao }}
+		{% if form.descricao.errors %}
+			<div class="form-error">
+				{% for error in form.descricao.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.valor.label }}</label>
+		{{ form.valor }}
+		{% if form.valor.errors %}
+			<div class="form-error">
+				{% for error in form.valor.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.tipo_gasto.label }}</label>
+		{{ form.tipo_gasto }}
+		{% if form.tipo_gasto.errors %}
+			<div class="form-error">
+				{% for error in form.tipo_gasto.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+		<div class="form-group row">
+			<div class="col-md-8">
+				<label for="projeto">Selecionar projeto</label>
+				<select class="form-control" id="id_projeto" name="projeto" required>
+
+					{% for projeto in form.projeto %}
+						{{ projeto.id }}{{ projeto }}
+					{% endfor %}
+				</select>
+				{% if form.projeto.errors %}
+					<div class="form-error">
+						{% for error in form.projeto.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div>
+
+			<div class="col-md-8">
+				<label for="deposito">Selecionar depósito</label>
+				<select class="form-control" id="id_deposito" name="deposito" required>
+					{% for d in form.deposito %}
+						<p>{{ d }}</p>
+						<!--option value={{ d.id }}>{{ d.data | date:"d/m/Y" }} - {{ d.valor }}</option-->
+					{% endfor %}
+				</select>
+
+			</div>
+		</div>
+
+
+		<p><label for="imagem">Imagens:</label>
+		{{ form.imagem }}
+		{% if form.imagem.errors %}
+			<div class="form-error">
+				{% for error in form.imagem.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+		
+		<p>
+		<label></label>
+		{{ form.imagem1 }}
+		{% if form.imagem1.errors %}
+			<div class="form-error">
+				{% for error in form.imagem1.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+		</br>
+		<button type="submit" class="btn btn-success">Salvar</button>
+		<!--Botão cancelar-->
+		<div class="btn-group">
+			<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   				Deletar
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a href="{% url 'notas:nota_delete' pk %}">Deletar Nota</a></li>
+				<li><a href="#">Cancelar</a></li>
+			</ul>
+		</div>
+	</form>
+	</br></br>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+/* ajax utilizado para carregar deposito somente após recebido projeto*/
+
+    $("#id_projeto").change(function () {
+      var url = $("#filterForm").attr("data-depositos-url");  // get the url of the `load_cities` view
+      var projetoId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'projeto': projetoId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_deposito").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+</script>
+
+{% endblock %} 		

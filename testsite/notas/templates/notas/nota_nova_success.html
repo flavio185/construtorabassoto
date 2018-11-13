@@ -1,0 +1,11 @@
+{% extends "notas/base.html" %}
+
+{% block content %}
+ <script>
+	
+window.onload = function myFunction() {
+    alert("Nota criada com sucesso!");
+    window.location.href = "{% url 'notas:nota_nova' %}";
+}
+</script>
+{% endblock %}

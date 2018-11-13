@@ -1,0 +1,20 @@
+{% extends "notas/base.html" %}
+
+{% block content %}
+
+	<p>{{ servico_terceirizado }}</p>
+	{% for serv in servicos_terceirizados  %}
+		<p>Projeto: {{serv.descricao}}</p>
+		<p>Empresa: {{serv.empresa.nome}}</p>
+		<p>Data do orçamento: {{serv.data}}</p>
+		<p>Valor total: {{serv.valor}}</p>
+
+	{%endfor%}
+	
+	<a href="{% url 'notas:nota_nova' %}?servico_terceirizado={{pk}}"  type="submit" class="btn btn-primary btn-block" > + Adicionar Pagamento</a>
+
+
+	{% include "notas/nota_list_servico.html" %}
+	
+{% endblock %}
+

@@ -1,0 +1,66 @@
+{% extends 'notas/base.html' %}
+
+{% block nav-notalist %}<a  class="active" href="{% url 'notas:nota_list' %}">Listar Notas</a>{% endblock %}
+
+
+{% block content %}
+
+<!--tab projeto-->
+{% include "notas/list_header.html" %}
+<!--Adiciona botão voador-->
+{% include "notas/add_button.html" %}
+
+<div class="container">
+
+	<ul class="nav nav-pills nav-justified">
+		<li class="nav-item"> <a class="nav-link active" href="#{{projeto}}">{{projeto}}</a></li>
+
+	</ul>
+
+	<div class="tab-content">
+		<div id="{{projeto}}" >
+			<div class="post">
+				<table class="indice">
+					<tr>
+						<th>Número NF</th>
+						<th>Data</th>
+						<th>Tipo</th>
+						<th>Emitente</th>		
+						<th>Descricao</th>
+						<th>Valor</th>
+						{% if deposito.valor  > 0 %}
+						
+						{% else %}
+							<th>Deposito</th>
+						{% endif %}
+						<th>Imagem</th>
+						<th>Imagem</th>
+					</tr>
+					{% for nota in notas %}
+						<tr>
+							{% if perms.notas.can_change %}
+							<td><a href="{% url 'notas:nota_edit' nota.pk %}?next={{ request.path|urlencode }}">{{ nota.numero }}</td>
+							{% else %}
+							<td>{{ nota.numero }}</td>
+							{% endif %}
+							<td>{{ nota.data|date:"d/m/Y" }}</td>
+							<td>{{ nota.tipo_gasto }}</td>
+							<td>{{ nota.emitente }}</td>				
+							<td>{{ nota.descricao }}</td>
+							<td class="alnright">{{ nota.valor }}</td>
+							{% if deposito.valor  > 0 %}
+								
+							{% else %}
+								<td>{{ nota.deposito.data | date:"d/m/Y" }} - {{ nota.deposito.valor }}</td>
+							{% endif %}
+							<td><a href="{{ media_url }}{{ nota.imagem }}">{% if  nota.imagem %} imagem {% endif %}</td>
+							<td><a href="{{ media_url }}{{ nota.imagem1 }}">{% if  nota.imagem1 %} imagem1 {% endif %}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+{% endblock %}

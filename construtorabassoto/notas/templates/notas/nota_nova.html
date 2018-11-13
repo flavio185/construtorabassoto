@@ -1,0 +1,189 @@
+{% extends "notas/base.html" %}
+
+{% block nav-notanova %}<a class="active"  href="{% url 'notas:nota_nova' %}">Nova nota</a>{% endblock %}
+
+
+{% block content %}
+	<table class="table" border="0">
+		<tr>
+			<td>
+				<h1>Adicionar nota de compra.</h1>
+			</td>
+		</tr>
+	</table>
+	<form method="post" enctype="multipart/form-data" data-depositos-url="{% url 'notas:ajax_carregar_depositos' %}" id="filterForm">
+		{% csrf_token %}
+		{% if form.non_field_errors %}
+			<div class="non-field-errors">
+				{% for error in form.non_field_errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		<p>
+		<label>{{ form.numero.label }}</label>
+		{{ form.numero }}
+		{% if form.numero.errors %}
+			<div class="form-error">
+				{% for error in form.numero.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.data.label }}</label>
+		<input class="form-control" type=date name=data value=data id="id_data" required>
+		{% if form.data.errors %}
+			<div class="form-error">
+				{% for error in form.data.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+		
+		<p>
+		<label>{{ form.emitente.label }}</label>
+		{{ form.emitente }}
+		{% if form.emitente.errors %}
+			<div class="form-error">
+				{% for error in form.emitente.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.descricao.label }}</label>
+		{{ form.descricao }}
+		{% if form.descricao.errors %}
+			<div class="form-error">
+				{% for error in form.descricao.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.valor.label }}</label>
+		{{ form.valor }}
+		{% if form.valor.errors %}
+			<div class="form-error">
+				{% for error in form.valor.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.tipo_gasto.label }}</label>
+		{{ form.tipo_gasto }}
+		{% if form.tipo_gasto.errors %}
+			<div class="form-error">
+				{% for error in form.tipo_gasto.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<div class="form-group row">
+			<div class="col-md-8">
+				<label for="projeto">Selecionar projeto</label>
+				{{ form.projeto }}
+				{% if form.projeto.errors %}
+					<div class="form-error">
+						{% for error in form.projeto.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div>
+			<div class="col-md-8">
+				<label for="deposito">Selecionar depósito</label>
+				<select class="form-control" id="id_deposito" name="deposito" required>
+					<option value="">Selecionar depósito</option>
+				</select>
+
+			</div>
+		</div>
+
+
+		<div class="form-group row">
+			<div class="col-md-8">
+		<p><label for="imagem">Imagens:</label>
+		{{ form.imagem }}
+		{% if form.imagem.errors %}
+			<div class="form-error">
+				{% for error in form.imagem.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		{{ form.imagem1 }}
+		{% if form.imagem1.errors %}
+			<div class="form-error">
+				{% for error in form.imagem1.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+		{{form.servico_terceirizado }}
+		{% if form.servico_terceirizado.errors %}
+		<div class="form-error">
+			{% for error in form.servico_terceirizado.errors %}
+				<span>{{ error }}</span>
+			{% endfor %}
+		</div>
+		{% endif %}
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary">Adicionar nota</button>
+	</form>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+/* ajax utilizado para carregar deposito somente após recebido projeto*/
+
+    $("#id_projeto").change(function () {
+      var url = $("#filterForm").attr("data-depositos-url");  // get the url of the `load_cities` view
+      var projetoId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'projeto': projetoId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_deposito").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+
+/* ajax utilizadorecarregar a pagina quando é feito um voltar pelo browser.
+se não quando clica em voltar o combo ja está selecionado e não funciona direito.*/
+
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || 
+                         ( typeof window.performance != "undefined" && 
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
+
+</script>
+
+{% endblock %}
+

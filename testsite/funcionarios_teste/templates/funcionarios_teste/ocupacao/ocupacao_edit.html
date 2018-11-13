@@ -1,0 +1,35 @@
+{% extends "funcionarios/base.html" %}
+
+{% block nav-ocupacaoedit %}<a class="active"  href="{% url 'funcionarios:ocupacao_edit' %}">Editar Ocupação</a>{% endblock %}
+
+
+{% block content %}
+	<table class="table" border="0">
+		<tr>
+			<td>
+				<h1>Editar Ocupação.</h1>
+			</td>
+		</tr>
+	</table>
+
+	<form method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+  		
+		  {% include 'funcionarios/ocupacao/ocupacao_form_info.html' with form=form %}
+
+        <div class="form-row ">
+		    <button type="submit" class="btn btn-success">Salvar Alterações</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Deletar 
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'funcionarios:ocupacao_delete' pk %}">Deletar Ocupação</a></li>
+                    <li><a href="#">Cancelar</a></li>
+                </ul>
+            </div>
+        </div>
+    </div><!--div de dentro do template.-->
+  </form>
+{% endblock %}

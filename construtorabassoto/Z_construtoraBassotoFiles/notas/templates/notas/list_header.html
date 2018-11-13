@@ -1,0 +1,25 @@
+<div class="container">
+    <table class="table" border="0">
+        <tr>
+        <td>
+            <h1>Lista de notas.</h1>
+        </td>
+        <td>
+            
+            {% if  deposito.valor  > 0 %}
+                <p class="semespaco" align="right"><b>Data do depósito: {{ deposito.data|date:"d/m/Y" }} </b> - >
+                <b>Valor do depósito: {{ deposito.valor }}</b></p>
+            {% else %}
+                 <p class="semespaco" align="right"><b>Deposito: Nenhum deposito selecionado.</b></p>
+            {% endif %}
+                <p class="semespaco" align="right">Total Notas (-) {{ total_notas }}</p>
+            {% if valor_em_caixa < 0 %}
+                <p class="vermelho" align="right"><b>Total em caixa = {{ valor_em_caixa }}</b></p>
+            {% else %}
+                <p class="semespaco" align="right">Total em caixa = {{ valor_em_caixa }}</p>
+            {% endif %}
+
+        </td>
+        </tr>
+    </table>
+</div>

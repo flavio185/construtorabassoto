@@ -4,8 +4,14 @@
 
 
 {% block content %}
-	<h1>Adicionar nota de compra</h1>
-	<form method="post" enctype="multipart/form-data">
+	<table class="table" border="0">
+		<tr>
+			<td>
+				<h1>Adicionar nota de compra.</h1>
+			</td>
+		</tr>
+	</table>
+	<form method="post" enctype="multipart/form-data" data-depositos-url="{% url 'notas:ajax_carregar_depositos' %}" id="filterForm">
 		{% csrf_token %}
 		{% if form.non_field_errors %}
 			<div class="non-field-errors">
@@ -14,7 +20,7 @@
 				{% endfor %}
 			</div>
 		{% endif %}
-
+	
 		<p>
 		<label>{{ form.numero.label }}</label>
 		{{ form.numero }}
@@ -29,8 +35,7 @@
 
 		<p>
 		<label>{{ form.data.label }}</label>
-		<input type=date name=data value=data>
-
+		<input class="form-control" type=date name=data value=data id="id_data" required>
 		{% if form.data.errors %}
 			<div class="form-error">
 				{% for error in form.data.errors %}
@@ -88,31 +93,42 @@
 		{% endif %}
 		</p>
 
-		<p>
-		<label>{{ form.deposito.label }}</label>
-		{{ form.deposito }}
-		{% if form.deposito.errors %}
-			<div class="form-error">
-				{% for error in form.deposito.errors %}
-					<span>{{ error }}</span>
-				{% endfor %}
+		<div class="form-group row">
+			<div class="col-md-8">
+				<label for="projeto">Selecionar projeto</label>
+				{{ form.projeto }}
+				{% if form.projeto.errors %}
+					<div class="form-error">
+						{% for error in form.projeto.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% endif %}
 			</div>
-		{% endif %}
-		</p>
+			<div class="col-md-8">
+				<label for="deposito">Selecionar depósito</label>
+				<select class="form-control" id="id_deposito" name="deposito" required>
+					<option value="">Selecionar depósito</option>
+				</select>
 
-		<p><label for="imagem">Blabla:</label>
-   		<input id="imagem" type="file" name="imagem" accept="image/*" /></p>
+			</div>
+		</div>
+
+
+		<div class="form-group row">
+			<div class="col-md-8">
+		<p><label for="imagem">Imagens:</label>
+		{{ form.imagem }}
 		{% if form.imagem.errors %}
 			<div class="form-error">
-
 				{% for error in form.imagem.errors %}
 					<span>{{ error }}</span>
 				{% endfor %}
 			</div>
 		{% endif %}
 		</p>
+
 		<p>
-		<label>{{ form.imagem1.label }}</label>
 		{{ form.imagem1 }}
 		{% if form.imagem1.errors %}
 			<div class="form-error">
@@ -122,9 +138,45 @@
 			</div>
 		{% endif %}
 		</p>
-
-
-		<input type="submit" value="Adicionar nota">
+		{{ form.servico_terceirizado }}
+		</div>
+		</div>
+		<button type="submit" class="btn btn-primary">Adicionar nota</button>
 	</form>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+/* ajax utilizado para carregar deposito somente após recebido projeto*/
+
+    $("#id_projeto").change(function () {
+      var url = $("#filterForm").attr("data-depositos-url");  // get the url of the `load_cities` view
+      var projetoId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'projeto': projetoId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_deposito").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+
+/* ajax utilizadorecarregar a pagina quando é feito um voltar pelo browser.
+se não quando clica em voltar o combo ja está selecionado e não funciona direito.*/
+
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || 
+                         ( typeof window.performance != "undefined" && 
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
+
+</script>
+
 {% endblock %}
 
