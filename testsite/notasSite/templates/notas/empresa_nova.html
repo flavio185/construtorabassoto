@@ -1,0 +1,105 @@
+{% extends "notas/base.html" %}
+
+{% block nav-empresanova %}<a class="active"  href="{% url 'notas:empresa_nova' %}">Nova empresa</a>{% endblock %}
+
+
+{% block content %}
+	<table class="table" border="0">
+		<tr>
+			<td>
+				<h1>Adicionar empresa nova.</h1>
+			</td>
+		</tr>
+	</table>
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<input type="hidden" name="next" value="{{ request.META.HTTP_REFERER }}">
+
+		{% if form.non_field_errors %}
+			<div class="non-field-errors">
+				{% for error in form.non_field_errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		<p>
+		<label>{{ form.nome.label }}</label>
+		{{ form.nome }}
+		{% if form.nome.errors %}
+			<div class="form-error">
+				{% for error in form.nome.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.contato.label }}</label>
+		{{ form.contato }}		
+		{% if form.contato.errors %}
+			<div class="form-error">
+				{% for error in form.contato.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.telefone.label }}</label>
+		{{ form.telefone }}		
+		{% if form.telefone.errors %}
+			<div class="form-error">
+				{% for error in form.telefone.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+								
+
+		<p>
+		<label>{{ form.telefone2.label }}</label>
+		{{ form.telefone2 }}
+		{% if form.telefone2.errors %}
+			<div class="form-error">
+				{% for error in form.telefone2.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.email.label }}</label>
+		{{ form.email }}
+		{% if form.email.errors %}
+			<div class="form-error">
+				{% for error in form.email.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+		
+		<p><label for="imagem">Imagens:</label>
+		{{ form.imagem }}
+		{% if form.imagem.errors %}
+			<div class="form-error">
+				{% for error in form.imagem.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+
+		<button type="submit" class="btn btn-success">Adicionar</button>
+
+	</form>
+	</br></br>
+	
+{% endblock %}
+

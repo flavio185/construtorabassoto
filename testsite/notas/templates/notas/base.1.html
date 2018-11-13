@@ -1,0 +1,183 @@
+{% load static %}
+<!doctype html>
+<html>
+	<head>
+		<title>Construtora Bassoto!</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
+
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+
+      .alnright { text-align: right; }
+
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #800000;
+        color: white;
+        text-align: center;
+        color: gray;
+      }
+
+      p.semespaco {
+          margin: 0;
+          padding: 0;
+      }
+      p.vermelho {
+          margin: 0;
+          padding: 0;
+          color:#e62200
+      }
+
+      table.indice {
+        counter-reset: rowNumber;
+      }
+      table.indice tr:not(:first-child) {
+        counter-increment: rowNumber;
+      }
+      table.indice tr td:first-child::before {
+        content: counter(rowNumber);
+        min-width: 1em;
+        margin-right: 0.5em;
+      }
+      span {
+        color: red;
+        text-align: center;
+      }
+    </style>
+
+	</head>
+	<body>
+<!--Menu-->
+<div class="navbar navbar-inverse navbar-static-top" style="border-bottom:none !important;">
+  <div class="container">
+    <!--Navbar Nome empresa-->
+    <div class="navbar-header">
+    <ul class="nav navbar-nav navbar-right">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+
+      </button> <a class="navbar-brand" href="{% url 'notas:nota_list' %}">CONSTRUTORA BASSOTO</a>
+
+    </div>
+    <!--NavBar Menu principal-->
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-left">
+
+        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">NOTAS <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li>{% block nav-notalist %}<a  href="{% url 'notas:nota_list' %}">Listar Notas</a>{% endblock %}
+            </li>
+            <li role="separator" class="divider"></li>
+            {% if perms.notas.can_change %}
+            <li>{% block nav-notanova %}<a  href="{% url 'notas:nota_nova' %}">Nova Nota</a>{% endblock %}
+            </li>
+            {% endif %}
+            <li>{% block nav-notafilterform %}<a  href="{% url 'notas:nota_filter_form' %}">Filtrar Notas</a>{% endblock %}
+            </li>
+          </ul>
+        </li>
+
+        <!--deposito-->  
+        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">DEPÓSITOS <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li>{% block nav-depositolist %}<a  href="{% url 'notas:deposito_list' %}">Listar Depósitos</a>{% endblock %}
+            </li>
+            {% if perms.notas.can_change %}
+            <li role="separator" class="divider"></li>
+            <li>{% block nav-depositonovo %}<a  href="{% url 'notas:deposito_novo' %}">Novo Depósito</a>{% endblock %}
+            {% endif %}
+          </ul>
+        </li>
+
+        <!-- servico terceirizado / empresa prestadora-->
+        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SERVIÇOS TERCEIRIZADOS <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li>{% block nav-servicolist %}<a  href="{% url 'notas:servico_list' %}">Listar Serviços</a>{% endblock %}</li>
+            {% if perms.notas.can_change %}
+            <li>{% block nav-empresalist %}<a  href="{% url 'notas:empresa_list' %}">Listar Empresas</a>{% endblock %}</li>
+            <li role="separator" class="divider"></li>
+            <li>{% block nav-serviconovo %}<a  href="{% url 'notas:servico_novo' %}">Novo Serviço</a>{% endblock %}
+            <li>{% block nav-empresanova %}<a  href="{% url 'notas:empresa_nova' %}">Nova Empresa</a>{% endblock %}
+            {% endif %}
+          </ul>
+        </li>
+
+        <!-- servico terceirizado / empresa prestadora-->
+        {% if perms.notas.can_change %}
+        <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">FUNCIONÁRIOS<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li>{% block nav-funcionariolist %}<a  href="{% url 'funcionarios:funcionario_list' %}">Listar Funcionários</a>{% endblock %}</li>
+            <li>{% block nav-funcionarionovo %}<a  href="{% url 'funcionarios:funcionario_novo' %}">Novo Funcionário</a>{% endblock %}</li>
+            <li role="separator" class="divider"></li>
+            <li>{% block nav-ocupacaolist %}<a  href="{% url 'funcionarios:ocupacao_list' %}">Ocupações</a>{% endblock %}</li>
+          </ul>
+        </li>
+        {% endif %}
+      </ul>
+
+      <!--Menu navbar direita, usuario login e logout-->
+      <ul class="nav navbar-nav navbar-right">
+
+        {% if user.is_authenticated %}
+          <li><p class="navbar-text">Usuário: {{ user.get_username }}</p></li>
+          <li>
+            <form action="{% url 'logout'%}?next={{request.path}}" method="get">
+              <button type="submit" class="btn btn-default navbar-btn" >Sair</button>
+            </form>
+          </li>   
+        {% else %}
+          <li>
+            <form action="{% url 'login'%}?next={{request.path}}" method="get">
+              <button type="submit" class="btn btn-default navbar-btn" >Sair</button>
+            </form>
+          </li>   
+        {% endif %} 
+
+      </ul>
+    </div>
+  </div>
+</div>
+		<div class="container">
+			<header>				
+			</header>
+		</div>
+
+		<div class="container">
+			<main>
+				{% block content %}
+        {% endblock %}
+			</main>
+			
+		</div>
+      
+
+
+  <div class="footer">
+   <!--p>CNPJ: 30.032.009/0001-45</br>
+    email: contato@wanegocios.com.br</p-->
+  </div>
+	</body>
+
+</html>
+
+

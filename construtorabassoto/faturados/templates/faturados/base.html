@@ -1,0 +1,210 @@
+{% load static %}
+<!doctype html>
+<html>
+	<head>
+		<title>Construtora Bassoto!</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+
+    <style>
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
+
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+
+      .alnright { text-align: right; }
+
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #800000;
+        color: white;
+        text-align: center;
+        color: gray;
+      }
+
+      p.semespaco {
+          margin: 0;
+          padding: 0;
+      }
+      p.vermelho {
+          margin: 0;
+          padding: 0;
+          color:#e62200
+      }
+
+      table.indice {
+        counter-reset: rowNumber;
+      }
+      table.indice tr:not(:first-child) {
+        counter-increment: rowNumber;
+      }
+      table.indice thead {
+        counter-increment: rowNumber;
+      }
+      table.indice tr td:first-child::before {
+        content: counter(rowNumber);
+        min-width: 1em;
+        margin-right: 0.5em;
+      }
+      tr.vermelho {
+        background-color: #FF7F95;
+          
+      }
+      tr.verde {
+        background-color: #8DCD94;
+      }
+      tr.azul {
+        background-color: #61D4E3;
+      }
+      tr.laranja {
+        background-color: #FFC573;
+      }
+      span {
+        color: red;
+        text-align: center;
+      }
+
+    </style>
+
+</head>
+<body>
+  
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <!-- Brand -->
+  
+    </button> <a class="navbar-brand" href="{% url 'notas:nota_list' %}">CONSTRUTORA BASSOTO</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+
+      <!-- Links -->
+      <ul class="navbar-nav">
+        <!-- Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+            NOTAS
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'notas:nota_list' %}">Listar Notas</a>
+            <a class="dropdown-item" href="{% url 'notas:nota_nova' %}">Nova Nota</a>
+            <a class="dropdown-item" href="{% url 'notas:nota_filter_form' %}">Filtrar Nota</a>
+
+          </div>
+        </li>
+        <!--deposito-->  
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+          DEPÓSITOS
+          </a>        
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'notas:deposito_list' %}">Listar Depósitos</a>
+            {% if perms.notas.can_change %}
+              <a class="dropdown-item" href="{% url 'notas:deposito_novo' %}">Novo Depósito</a>
+            {% endif %}
+          </div>
+        </li>
+
+        <!-- servico terceirizado / empresa prestadora-->
+        <a class="nav-link " href="{% url 'notas:empresa_list' %}" id="navbardrop">SERVIÇOS TERCEIRIZADOS</a>
+        <!-- Faturados-->
+          <a class="nav-link " href="{% url 'faturados:home'  %}" id="navbardrop">FATURADOS</a>
+        <!--li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="{% url 'notas:empresa_list' %}" id="navbardrop" data-toggle=>
+            SERVIÇOS TERCEIRIZADOS
+          </a>        
+          <div class="dropdown-menu">
+            {% if perms.notas.can_change %}
+            <a class="dropdown-item" href="{% url 'notas:empresa_list' %}">Empresas</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'notas:servico_novo' %}">Novo Serviço</a>
+            <a class="dropdown-item" href="{% url 'notas:empresa_nova' %}">Nova Empresa</a>
+            {% endif %}
+          </div>
+        </li-->
+      
+        <!--Funcionarios-->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+            FUNCIONÁRIOS
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'funcionarios:funcionario_list' %}">Listar Funcionários</a>
+            <a class="dropdown-item" href="{% url 'funcionarios:funcionario_novo' %}">Novo Funcionário</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'funcionarios:ocupacao_list' %}">Ocupações</a>
+          </div>
+      </ul>
+      </li>
+      <!--Menu navbar direita, usuario login e logout-->
+        <li class="navbar-nav ml-auto">
+
+          {% if user.is_authenticated %}
+            <div class="navbar-text">Usuário: {{ user.get_username }}&nbsp;&nbsp;&nbsp;</div> 
+              <form action="{% url 'logout'%}?next={{request.path}}" method="get">
+                <button type="submit" class="btn btn-default navbar-btn" >Sair</button>
+              </form>
+          {% else %}
+              <form action="{% url 'login'%}?next={{request.path}}" method="get"> 
+                <button type="submit" class="btn btn-default navbar-btn" >Sair</button>
+              </form>
+          {% endif %} 
+
+      </li>
+    </div>
+  </nav>
+  <br>
+
+
+  <div class="container">
+    <header>				
+    </header>
+  </div>
+
+  <div class="container">
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
+  </div>
+      
+
+
+  <div class="footer">
+   <!--p>CNPJ: 30.032.009/0001-45</br>
+    email: contato@wanegocios.com.br</p-->
+  </div>
+
+  </body>
+
+</html>
+
+

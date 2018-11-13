@@ -1,0 +1,65 @@
+{% extends "funcionarios/base.html" %}
+
+{% block nav-funcionariolist %}<a class="active"  href="{% url 'funcionarios:funcionario_list' %}">Listar Pagamentos</a>{% endblock %}
+
+
+{% block content %}
+<table class="table" border="0">
+	<tr>
+		<td>
+			<h1>Lista de Pagamentos.</h1>
+		</td>
+	</tr>
+</table>
+
+<div class="post">
+
+	<a href="{% url 'funcionarios:pagamento_novo' %}" type="submit" class="btn btn-primary btn-block" > + Adicionar Pagamentos</a>
+
+	<table class="indice">
+		<tr>
+			<th></th>
+			<th>Data</th>
+			<th>Valor</th>
+			<th>Tipo</th>
+			<th>Comentários</th>
+			
+
+		</tr>
+		{% for pagamento in pagamentos %}
+			<tr>
+				<td><a href="{% url 'funcionarios:pagamento_edit' pagamento.pk %}">editar</td>
+				<td>{{ pagamento.data }}</td>
+				{% if pagamento.valor < 1 and pagamento.tipo == 'Adiantamento' %}:
+					<td>{{ func.total_salarios_40pc | floatformat:2 }}</td>
+				{% elif pagamento.valor < 1 and pagamento.tipo == 'Pagamento' %}:
+					<td>{{ func.total_salarios_60pc | floatformat:2 }}</td>	
+				{% elif pagamento.valor < 1 and pagamento.tipo == 'Vale Refeição' %}:
+					<td>{{ func.total_alimentacao | floatformat:2 }}</td>	
+				{% elif pagamento.valor < 1 and pagamento.tipo == 'Vale Transporte' %}:
+					<td>{{ func.total_transporte | floatformat:2 }}</td>	
+				{% else %}:
+					<td>{{ pagamento.valor }}</td>
+				{% endif %}:
+				<td>{{ pagamento.tipo }}</td>
+				<td>{{ pagamento.comentario }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+
+</div>
+{% endblock %}
+	<div >
+	<table>
+		
+				<tr>
+				<td align="right">Adiantamento 40%: {{ func.total_salarios_40pc | floatformat:2 }}</td>
+				<tr><td>Pagamento 60%: {{ func.total_salarios_60pc | floatformat:2 }}</td></tr>
+				<tr><td> Salários: {{ func.total_salarios }}</td>
+				
+				<td align="right">Vale Refeição: {{ func.total_alimentacao | floatformat:2 }}</td>
+				<td align="right">Vale Transporte: {{ func.total_transporte | floatformat:2 }}</td>
+				</tr>
+			</tr>
+		</table>
+	</div>

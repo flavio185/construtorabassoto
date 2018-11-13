@@ -17,13 +17,22 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from rest_framework import routers
+from funcionarios.api.viewsets import FuncionarioViewSet
 
+##djangoRESTFramework Lines
+router = routers.DefaultRouter()
+router.register(r'funcionario', FuncionarioViewSet, base_name="Funcionario")
 
 urlpatterns = [
+    #path('', include('notas.urls')),
     path('admin/', admin.site.urls),
     path('hello/', include('hello.urls')),
     path('guestbook/', include('guestbook.urls')),
-    path('notas/', include('notas.urls')),
+    #path('notas/', include('notas.urls')),
+    path('funcionarios/', include('funcionarios.urls')),
+    path('funcionarios_teste/', include('funcionarios_teste.urls')),
+    
 
     # ... the rest of your URLconf goes here ...
 ]
@@ -32,3 +41,6 @@ urlpatterns = [
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
 ]
+
+##djangoRESTFramework Lines
+urlpatterns += router.urls

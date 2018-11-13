@@ -1,0 +1,54 @@
+{% extends "faturados/base.html" %}
+
+
+{% block content %}
+{% include 'faturados/css/paginator.css' %}
+{% include 'faturados/css/myModal.css' %}
+
+{% if perms.notas.can_change %}
+<button type="button" class="btn btn-default new">Novo</button>
+{% endif %}
+<table class="indice">
+	<thead>
+		<th></th>
+		<th>Vencimento</th>
+		<th>Descrição</th>
+		<th>Valor</th>
+		<th>Projeto</th>
+		<th>Pago</th>
+	</thead>
+	<tbody>
+		
+	</tbody>
+
+</table>
+
+<div style="padding:  10px;" class="center">
+  <div class="pagination" id="pagination">
+    <!--a href="#">&laquo;</a>
+    <a href="#">1</a>
+    <a href="#" class="active">2</a>
+    <a href="#">3</a>
+    <a href="#">4</a>
+    <a href="#">5</a>
+    <a href="#">6</a>
+    <a href="#">&raquo;</a-->
+  </div>
+</div>
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+		<!-- Modal content -->
+		<div id="modal-content" class="modal-content">
+		</div>
+	  
+	  </div>
+</div>
+
+<script>
+  {% include 'faturados/js/app.js' %}
+</script>
+  {% csrf_token %}
+{% endblock %}

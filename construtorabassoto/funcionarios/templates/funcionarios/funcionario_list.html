@@ -1,0 +1,53 @@
+{% extends "funcionarios/base.html" %}
+
+{% block nav-funcionariolist %}<a class="active"  href="{% url 'funcionarios:funcionario_list' %}">Listar Funcionarios</a>{% endblock %}
+
+
+{% block content %}
+<table class="table" border="0">
+	<tr>
+		<td>
+			<h1>Lista de Funcionarios.</h1>
+			{% if status_func == "True" %}
+				<a href="{% url 'funcionarios:funcionario_list' %}?ativo=False">> Listar Funcionarios inativos</a>
+			{% else %}
+				<a href="{% url 'funcionarios:funcionario_list' %}">> Listar Funcionarios ativos</a>
+			{% endif %}
+		</td>
+	</tr>
+</table>
+
+<div class="post">
+
+	<a href="{% url 'funcionarios:funcionario_novo' %}" type="submit" class="btn btn-primary btn-block" > + Adicionar Funcionário</a>
+
+	<table class="indice">
+		<tr>
+			<th></th>
+			<th>Nome</th>
+			<th>RG</th>
+			<th>Ocupação</th>
+
+		</tr>
+		{% for funcionario in funcionarios %}
+			<tr>
+				<td><a href="{% url 'funcionarios:funcionario_edit' funcionario.pk %}">editar</td>
+				<td>{{ funcionario.nome }}</td>
+				<td>{{ funcionario.rg }}</td>
+				<td>{{ funcionario.ocupacao }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+	{% if status_func == "True" %}
+		<table>
+				<tr>
+				<td align="right">Adiantamento 40%: {{ total_salarios_40pc | floatformat:2 }}<br>
+				Pagamento 60%: {{ total_salarios_60pc | floatformat:2 }}<br>
+				Total Salários: {{ total_salarios }}</td>
+				<td align="right">Vale Refeição: {{ total_alimentacao | floatformat:2 }}</td>
+				<td align="right">Vale Transporte: {{ total_transporte | floatformat:2 }}</td>
+			</tr>
+		</table>
+	{%endif%}	
+</div>
+{% endblock %}

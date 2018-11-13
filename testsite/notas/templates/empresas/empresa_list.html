@@ -1,0 +1,45 @@
+{% extends 'notas/base.html' %}
+
+{% block nav-empresalist %}<a  class="active" href="{% url 'servicos_terceirizados:empresa_list' %}">Listar Empresas</a>{% endblock %}
+
+
+{% block content %}
+<table class="table" border="0">
+	<tr>
+		<td>
+			<h1>Lista de empresas prestadoras de serviço.</h1>
+		</td>
+	</tr>
+</table>
+
+<div class="post">
+	<table class="indice">
+		<tr>
+			<th></th>
+			<th>nome</th>
+			<th>contato</th>
+			<th>telefone</th>
+			<th>telefone2</th>
+			<th>email</th>
+			<th>descrição</th>
+			<th>imagem</th>
+
+		</tr>
+		{% for empresa in empresas %}
+			<tr>
+				{% if perms.notas.can_change %}				
+					<td><a href="{% url 'servicos_terceirizados:empresa_edit' empresa.pk %}">editar</td>
+				{% endif %}
+				<td><a href="{% url 'servicos_terceirizados:servico_list' %}?empresa={{empresa.pk}}">{{ empresa.nome }}</td>
+				<td>{{ empresa.contato }}</td>		
+				<td>{{ empresa.telefone }}</td>		
+				<td>{{ empresa.telefone2 }}</td>
+				<td>{{ empresa.email }}</td>
+				<td>{{ empresa.descrição }}</td>
+				<td><a href="{{ media_url }}{{ empresa.imagem }}">{% if  empresa.imagem %} imagem {% endif %}</td>
+			</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}
+

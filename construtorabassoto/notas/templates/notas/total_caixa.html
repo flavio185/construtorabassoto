@@ -1,0 +1,33 @@
+<style>
+.caixa_aviso {
+    position: fixed;
+    width: 11%;
+    height: 19%;
+    top: 96px;
+    left: 10px;
+    background-color: #3c7392;
+    background-image: linear-gradient(to right,#3c7392 , #58b6ea);
+    color: #ffffff;
+    text-align: left;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 15px;
+    text-indent: 20px
+}
+
+
+.my-caixa_aviso{
+	margin-top:22px;
+    font-size: 18px;
+    
+}
+.inside {
+    position: absolute;
+    bottom: 10%;
+}
+</style>
+
+<!-- Code goes here -->
+<div class="caixa_aviso">
+    <div class="my-caixa_aviso"><i>Em caixa:</i></div>
+    <div class="inside"><h3>{{total_caixa}}</h3></div>
+</div>

@@ -1,0 +1,37 @@
+    <input type="hidden" name="next" value="{{ request.META.HTTP_REFERER }}">
+    {% if form.non_field_errors %}
+			<div class="non-field-errors">
+				{% for error in form.non_field_errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+  <div class="card card-body">
+
+  <!--form-->
+    <div class="form-row ">
+      <div class="form-group col-8">
+		{{form.nome.label}}
+		{{form.nome}}
+        {% if form.nome.errors %}
+        <div class="form-error">
+          {% for error in form.nome.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+	    {% endif %}
+      </div>
+    </div>
+    <div class="form-row ">
+      <div class="form-group col-4">
+		{{form.valor.label}}
+		{{form.valor}}
+      {% if form.valor.errors %}
+        <div class="form-error">
+          {% for error in form.valor.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+	    {% endif %}
+      </div>
+    </div>    

@@ -1,0 +1,34 @@
+{% block content %}
+	<div class="tab-content">
+		<table class="indice">
+			<tr>
+				<th>Número NF</th>
+				<th>Data</th>
+				<th>Tipo</th>
+				<th>Emitente</th>		
+				<th>Descricao</th>
+				<th>Valor</th>
+				<th>Deposito</th>
+				<th>Imagem</th>
+				<th>Imagem</th>
+			</tr>
+			{% for nota in notas %}
+				<tr>
+					{% if perms.notas.can_change %}
+						<td><a href="{% url 'notas:nota_edit' nota.pk %}?next={{ request.path|urlencode }}">{{ nota.numero }}</td>
+					{% else %}
+						<td>{{ nota.numero }}</td>
+					{% endif %}
+					<td>{{ nota.data|date:"d/m/Y" }}</td>
+					<td>{{ nota.tipo_gasto }}</td>
+					<td>{{ nota.emitente }}</td>				
+					<td>{{ nota.descricao }}</td>
+					<td class="alnright">{{ nota.valor }}</td>
+					<td>{{ nota.deposito.data | date:"d/m/Y" }} - {{ nota.deposito.valor }}</td>
+					<td><a href="{{ media_url }}{{ nota.imagem }}">{% if  nota.imagem %} imagem {% endif %}</td>
+					<td><a href="{{ media_url }}{{ nota.imagem1 }}">{% if  nota.imagem1 %} imagem1 {% endif %}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'notas/base.html' %}
+
+{% block nav-servicolist %}<a  class="active" href="{% url 'notas:servico_list' %}">Listar Serviços Terceirizados</a>{% endblock %}
+
+
+{% block content %}
+    <table class="table" border="0">
+        <tr>
+        <td>
+            <h1>Orçamentos</h1>
+        </td>
+        <td>
+           
+            <p class="semespaco" align="right">Total Serviços: {{ total_servicos }}</p>
+
+        </td>
+        </tr>
+    </table>
+
+<div class="post">
+	<a href="{% url 'notas:servico_novo' %}" type="submit" class="btn btn-primary btn-block" > + Adicionar Orçamento</a>
+	<table class="indice">
+		<tr>
+			<th></th>
+			<th>data</th>
+			<th>empresa</th>
+			<th>descricao</th>
+			<th>valor</th>
+			<th>imagem</th>
+			<th>projeto</th>
+
+		</tr>
+		{% for servico in servicos %}
+			<tr>
+				<td><a href="{% url 'notas:servico_detail' servico.pk %}">Detalhes</td>
+				<td>{{ servico.data|date:"d/m/Y" }}</td>
+				{% if servico.empresa %}
+						<td>{{ servico.empresa.nome }}</td>
+				{% else %}
+					<td>Nenhuma empresa associada</td>
+				{% endif %}
+				<td>{{ servico.descricao }}</td>		
+				<td>{{ servico.valor }}</td>		
+				<td><a href="{{ media_url }}{{ servico.imagem }}">{% if  servico.imagem %} imagem {% endif %}</td>
+				<td>{{ servico.projeto }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}
+

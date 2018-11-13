@@ -1,0 +1,41 @@
+{% extends "funcionarios/base.html" %}
+
+{% block nav-funcionariolist %}<a class="active"  href="{% url 'funcionarios:funcionario_list' %}">Listar Funcionarios</a>{% endblock %}
+
+
+{% block content %}
+<table class="table" border="0">
+	<tr>
+		<td>
+			<h1>Lista de Funcionarios.</h1>
+		</td>
+	</tr>
+</table>
+
+<div class="post">
+
+	<a href="{% url 'funcionarios:funcionario_novo' %}" type="submit" class="btn btn-primary btn-block" > + Adicionar Funcionário</a>
+
+	<table class="indice">
+		<tr>
+			<th></th>
+			<th>Nome</th>
+			<th>RG</th>
+			<th>Celular</th>
+			<th>Telefone</th>
+			<th>Ocupação</th>
+
+		</tr>
+		{% for funcionario in funcionarios %}
+			<tr>
+				<td><a href="{% url 'funcionarios:funcionario_edit' funcionario.pk %}">editar</td>
+				<td>{{ funcionario.nome }}</td>
+				<td>{{ funcionario.rg }}</td>
+				<td>{{ funcionario.telefone }}</td>
+				<td>{{ funcionario.telefone2 }}</td>
+				<td>{{ funcionario.ocupacao }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}

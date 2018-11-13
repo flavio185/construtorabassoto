@@ -1,0 +1,25 @@
+{% extends "funcionarios/base.html" %}
+
+{% block nav-depositonovo %}<a class="active"  href="{% url 'funcionarios:funcionario_novo' %}">Novo Depósito</a>{% endblock %}
+
+
+{% block content %}
+	<table class="table" border="0">
+		<tr>
+			<td>
+				<h1>Detalhes do Funcionário</h1>
+			</td>
+		</tr>
+	</table>
+
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+  		
+		  {% include 'funcionarios/funcionario_form_edit.html' with form=form %}
+
+		<button type="submit" class="btn btn-primary">Salvar alterações</button>
+		</div><!--div de dentro do template.-->
+
+ 	</form>
+{% endblock %}
+

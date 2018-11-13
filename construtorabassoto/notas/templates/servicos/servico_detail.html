@@ -1,0 +1,27 @@
+{% extends "notas/base.html" %}
+
+{% block nav-depositonovo %}<a class="active"  href="{% url 'notas:deposito_novo' %}">Novo Depósito</a>{% endblock %}
+
+
+{% block content %}
+
+{%for servico in servico_terceirizado%}
+	<h2>Orçamento</h2> 
+	{% if perms.notas.can_change %}
+		<a href="{% url 'notas:servico_edit' servico.pk %}">editar serviço</a>
+	{% endif %}
+	<p><b>Empresa: </b>{{servico.empresa.nome}}</p>
+	<p><b>Descricao do serviço: </b>{{servico.descricao}}</p>
+	<p><b>Valor: </b>{{servico.valor}}</p>
+	<p><b>Projeto: </b>{{servico.projeto}}</p>
+	<p><b>Total Pago: </b>{{total_notas}}</p>
+	
+{%endfor%}
+
+	</br>
+	<a href="{% url 'notas:nota_nova' %}?servico_terceirizado={{pk}}" type="submit" class="btn btn-primary btn-block" > + Adicionar Pagamento (Nota)</a>
+
+	{% include 'notas/nota_list_servico.html' %}
+
+{% endblock %}
+

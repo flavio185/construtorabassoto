@@ -1,0 +1,136 @@
+{% extends "notas/base.html" %}
+
+{% block nav-notafilterform %}<a class="active" href="{% url 'notas:nota_filter_form' %}">Filtrar Notas</a>{% endblock %}
+
+
+{% block content %}
+
+<div class="col-md-12">
+        <p></p>
+	<table class="table" border="0">
+		<tr>
+			<td>
+				<h1>Filtrar notas.</h1>
+			</td>
+		</tr>
+	</table>
+	<form action="{% url 'notas:nota_filter' %}" data-depositos-url="{% url 'notas:ajax_carregar_depositos' %}" method="get" id="filterForm" >
+		{% csrf_token %}
+			{% if form.non_field_errors %}
+				<div class="non-field-errors">
+					{% for error in form.non_field_errors %}
+						<span>{{ error }}</span>
+					{% endfor %}
+				</div>
+			{% endif %}
+
+		<div class="form-group row">
+			<div class="col-md-8">
+			<label for="projeto">Filtrar por projeto</label>
+			<select class="form-control" id="id_projeto" name="projeto" required>
+				<option value="">Selecionar projeto</option>
+				{% for projeto in projetos %}
+					<option value={{ projeto.id }}>{{ projeto }}</option>
+				{% endfor %}
+			</select>
+			</div>
+			<div class="col-md-8">
+			<label for="deposito">Filtrar por depósito</label>
+			<select class="form-control" id="id_deposito" name="deposito">
+				<option value="">Selecionar depósito</option>
+				{% for deposito in depositos %}
+					<option value={{ deposito.id }}>{{ deposito.data | date:"d/m/Y" }} - {{ deposito.valor }}</option>
+				{% endfor %}
+			</select>
+			</div>
+		</div>
+			<div class="form-group row">
+				 <div class="panel-heading">Filtrar por data</div>
+				<div class="form-row">
+					<div class="col-md-4 mb-3">
+						<label for="data_inicio">Selecionar data inicial</label>
+						<input type="date" class="form-control" id="id_data_inicio" name="data_inicio" >
+					</div>
+					<div class="col-md-4 mb-3">
+						<label for="data_fim">Selecionar data final</label>
+						<input type="date" class="form-control" id="id_data_fim" name="data_fim" >
+					</div>
+				</div>
+			</div>
+			</br>
+		<div class="form-group row">
+			<div class="col-md-8">
+				<label for="tipo_gasto">Filtro por tipo de gasto</label>
+				<select class="form-control" name="tipo_gasto">
+					<option value="">Selecione o tipo gasto</option>
+					<option value="Depósitos">Depósitos</option>
+					<option value="Equipamentos">Equipamentos</option>
+					<option value="Funcionários">Funcionários</option>
+					<option value="Impostos">Impostos</option>
+					<option value="Materiais">Materiais</option>
+					<option value="Serviços">Serviços</option>
+					<option value="Serviços Terceirizados">Serviços Terceirizados</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-md-8">
+				<label for="numero">Filtrar por número da nota</label>
+					<input type="text" class="form-control" name="numero" id="id_numero" placeholder="Digite o número da nota">
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<div class="col-md-8">
+				<label for="valor">Filtrar por valor da nota</label>
+					<input type="text" class="form-control" name="valor" id="id_valor" placeholder="Digite o valor da nota">
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<div class="col-md-8">
+				<label for="emitente">Filtrar por emitente da nota</label>
+					<input type="text" class="form-control" name="emitente" id="id_emitente" placeholder="Digite o emitente da nota">
+			</div>
+		</div>
+	<button type="submit" class="btn btn-primary">Filtrar</button>
+	</form>
+	
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+/* ajax utilizado para carregar deposito somente após recebido projeto*/
+
+    $("#id_projeto").change(function () {
+      var url = $("#filterForm").attr("data-depositos-url");  // get the url of the `depositos` view
+      var projetoId = $(this).val();  // get the selected projeto ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'projeto': projetoId       // add the projeto id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_deposito").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+
+/* ajax utilizadorecarregar a pagina quando é feito um voltar pelo browser.
+se não quando clica em voltar o combo ja está selecionado e não funciona direito.*/
+
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || 
+                         ( typeof window.performance != "undefined" && 
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
+
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,39 @@
+{% extends 'notas/base.html' %}
+
+{% block nav-empresalist %}<a  class="active" href="{% url 'notas:empresa_list' %}">Empresas</a>{% endblock %}
+
+
+{% block content %}
+<table class="table" border="0">
+	<tr>
+		<td>
+			<h1>Empresas prestadoras de serviço.</h1>
+		</td>
+	</tr>
+</table>
+
+<div class="post">
+	<a href="{% url 'notas:empresa_nova' %}" type="submit" class="btn btn-primary btn-block" > + Adicionar Empresa</a>
+	<table class="indice">
+		<tr>
+			<th></th>
+			<th>nome</th>
+			<th>contato</th>
+			<th>telefone</th>
+		</tr>
+		{% for empresa in empresas %}
+			<tr>
+				{% if perms.notas.can_change %}				
+					<td><a href="{% url 'notas:empresa_edit' empresa.pk %}">editar</td>
+				{% else %}
+					<td></td>
+				{% endif %}
+				<td><a href="{% url 'notas:servico_list' %}?empresa={{empresa.pk}}">{{ empresa.nome }}</td>
+				<td>{{ empresa.contato }}</td>		
+				<td>{{ empresa.telefone }}</td>		
+			</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}
+

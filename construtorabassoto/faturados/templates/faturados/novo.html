@@ -1,0 +1,13 @@
+<div class="form-row ">
+    <div class="form-group col">
+    <label for="id_nome">Nome:</label>
+    <input type="text" name="nome" placeholder="Digite o nome" class="form-control" maxlength="70" required="" id="id_nome">
+    {% if form.nome.errors %}
+        <div class="form-error">
+        {% for error in form.nome.errors %}
+            <span>{{ error }}</span>
+        {% endfor %}
+        </div>
+    {% endif %}
+    </div>
+</div>

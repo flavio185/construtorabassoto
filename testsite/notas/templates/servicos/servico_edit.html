@@ -1,0 +1,119 @@
+{% extends "notas/base.html" %}
+
+{% block nav-depositonovo %}<a class="active"  href="{% url 'notas:deposito_novo' %}">Novo Depósito</a>{% endblock %}
+
+
+{% block content %}
+
+	<table class="table" border="0">
+		<tr>
+			<td>
+				<h1>Serviço / Orçamento -  {{form.empresa.value}}</h1>
+			</td>
+		</tr>
+	</table>
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<input type="hidden" name="next" value="{{ request.META.HTTP_REFERER }}">
+
+		{% if form.non_field_errors %}
+			<div class="non-field-errors">
+				{% for error in form.non_field_errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+
+		<p>
+		<label>{{ form.data.label }}</label>
+		<input type=date name=data value="{{ form.data.value|date:"Y-m-d" }}">
+		{% if form.data.errors %}
+			<div class="form-error">
+				{% for error in form.data.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.empresa.label }}</label>
+		{{ form.empresa }}		
+		{% if form.empresa.errors %}
+			<div class="form-error">
+				{% for error in form.empresa.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p>
+		<label>{{ form.descricao.label }}</label>
+		{{ form.descricao }}		
+		{% if form.descricao.errors %}
+			<div class="form-error">
+				{% for error in form.descricao.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+								
+
+		<p>
+		<label>{{ form.valor.label }}</label>
+		{{ form.valor }}
+		{% if form.valor.errors %}
+			<div class="form-error">
+				{% for error in form.valor.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p><label for="projeto">Projeto:</label>
+		{{ form.projeto }}
+		{% if form.projeto.errors %}
+			<div class="form-error">
+				{% for error in form.projeto.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+		<p><label for="imagem">Imagens:</label>
+		{{ form.imagem }}
+		{% if form.imagem.errors %}
+			<div class="form-error">
+				{% for error in form.imagem.errors %}
+					<span>{{ error }}</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+		</p>
+
+
+		<button type="submit" class="btn btn-success">Salvar</button>
+
+		<div class="btn-group">
+		<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   		 Deletar 
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+			<li><a href="{% url 'notas:servico_delete' pk %}">Deletar Servico</a></li>
+			<li><a href="#">Cancelar</a></li>
+		</ul>
+		</div>
+	</form>
+	</br></br>
+	<a href="{% url 'notas:nota_nova' %}?servico_terceirizado={{pk}}"  type="submit" class="btn btn-primary btn-block" > + Adicionar Pagamento</a>
+
+
+	{% include "notas/nota_list_servico.html" %}
+	
+{% endblock %}
+
